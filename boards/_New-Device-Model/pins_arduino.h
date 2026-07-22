@@ -1,133 +1,110 @@
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
 
-#include "soc/soc_caps.h"
-#include <stdint.h>
+// This toolchain (toolchain-xtensa-esp-elf, GCC 14.2) force-includes the
+// board's pins_arduino.h via a command-line -include as part of its normal
+// variant-loading mechanism - this happens before its own internal stdint.h
+// chain is fully set up. Pulling in <stdint.h> here (or using typed
+// `static const uint8_t` declarations, which need it) breaks that chain
+// (a gcc `-include` + `#include_next` interaction). Plain #define avoids
+// the problem entirely since it needs no type/header at all.
 
 #define USB_VID 0x303a
 #define USB_PID 0x1001
 
-static const uint8_t TX = 43;
-static const uint8_t RX = 44;
+#define TX 1
+#define RX 3
 
-static const uint8_t TXD2 = 1;
-static const uint8_t RXD2 = 2;
+#define SDA 21
+#define SCL 22
 
-static const uint8_t SDA = 13;
-static const uint8_t SCL = 15;
+// Required by the core SD/Wire/SPI libraries even though this board has no
+// SD slot - they use these as default parameter values. -1 means "not used".
+#define SS   -1
+#define MOSI -1
+#define MISO -1
+#define SCK  -1
 
-// Modified elsewhere
-static const uint8_t SS = -1;
-static const uint8_t MOSI = -1;
-static const uint8_t MISO = -1;
-static const uint8_t SCK = -1;
+#define G0  0
+#define G1  1
+#define G2  2
+#define G3  3
+#define G4  4
+#define G5  5
+#define G12 12
+#define G13 13
+#define G14 14
+#define G15 15
+#define G16 16
+#define G17 17
+#define G18 18
+#define G19 19
+#define G21 21
+#define G22 22
+#define G23 23
+#define G25 25
+#define G26 26
+#define G27 27
+#define G32 32
+#define G33 33
+#define G34 34
+#define G35 35
 
-static const uint8_t G0 = 0;
-static const uint8_t G1 = 1;
-static const uint8_t G2 = 2;
-static const uint8_t G3 = 3;
-static const uint8_t G4 = 4;
-static const uint8_t G5 = 5;
-static const uint8_t G6 = 6;
-static const uint8_t G7 = 7;
-static const uint8_t G8 = 8;
-static const uint8_t G9 = 9;
-static const uint8_t G10 = 10;
-static const uint8_t G11 = 11;
-static const uint8_t G12 = 12;
-static const uint8_t G13 = 13;
-static const uint8_t G14 = 14;
-static const uint8_t G15 = 15;
-static const uint8_t G39 = 39;
-static const uint8_t G40 = 40;
-static const uint8_t G41 = 41;
-static const uint8_t G42 = 42;
-static const uint8_t G43 = 43;
-static const uint8_t G44 = 44;
-static const uint8_t G46 = 46;
+#define ADC1 34
+#define ADC2 35
 
-static const uint8_t ADC1 = 7;
-static const uint8_t ADC2 = 8;
-
-#define FM_RSTPIN 40
-#define PIN_CLK 43
-#define I2S_SCLK_PIN 43
-#define I2S_DATA_PIN 46
-#define PIN_DATA 46
-
-#define RGB_LED 21
-
-#define BCLK 41
-#define WCLK 43
-#define DOUT 42
-
-#define BAD_TX GROVE_SDA
-#define BAD_RX GROVE_SCL
-
-#define HAS_BTN 0
+// --- Buttons: 3-button scheme, no physical buttons onboard - wire your own ---
+// SEL = select/confirm, UP = previous (long-press = ESC), DW = next
+#define HAS_BTN 1
+#define SEL_BTN 26
+#define UP_BTN  25
+#define DW_BTN  27
 #define BTN_ALIAS "\"Ok\""
-#define BTN_PIN 0
 #define BTN_ACT LOW
 
-#define IR_TX_PINS '{{"M5 IR Mod", GROVE_SDA}, {"Pin 1", 1}, {"Pin 2", 2}}'
-#define IR_RX_PINS '{{"M5 IR Mod", GROVE_SCL}, {"Pin 1", 1}, {"Pin 2", 2}}'
 #define TXLED -1
-#define LED_ON HIGH
+#define LED_ON  HIGH
 #define LED_OFF LOW
 
-#define RF_TX_PINS '{{"M5 RF433T", GROVE_SDA}, {"Pin 1", 1}, {"Pin 2", 2}}'
-#define RF_RX_PINS '{{"M5 FR433R", GROVE_SCL}, {"Pin 1", 1}, {"Pin 2", 2}}'
-
-#define CC1101_GDO0_PIN 9
-#define CC1101_SS_PIN 10
+// No CC1101/NRF24 radio module wired to this board
+#define CC1101_GDO0_PIN -1
+#define CC1101_SS_PIN   -1
 #define CC1101_MOSI_PIN SPI_MOSI_PIN
-#define CC1101_SCK_PIN SPI_SCK_PIN
+#define CC1101_SCK_PIN  SPI_SCK_PIN
 #define CC1101_MISO_PIN SPI_MISO_PIN
 
-#define NRF24_CE_PIN 6
-#define NRF24_SS_PIN 7
+#define NRF24_CE_PIN   -1
+#define NRF24_SS_PIN   -1
 #define NRF24_MOSI_PIN SPI_MOSI_PIN
-#define NRF24_SCK_PIN SPI_SCK_PIN
+#define NRF24_SCK_PIN  SPI_SCK_PIN
 #define NRF24_MISO_PIN SPI_MISO_PIN
 
 #define FP 1
-#define FM 2
-#define FG 3
+#define FM 1
+#define FG 2
 
 #define HAS_SCREEN 1
 #define ROTATION 1
-#define MINBRIGHT 160
 
-#define USER_SETUP_LOADED 1
-#define USE_HSPI_PORT 1
-#define ST7789_2_DRIVER 1
-#define TFT_RGB_ORDER 1
-#define TFT_WIDTH 135
-#define TFT_HEIGHT 240
-#define TFT_BACKLIGHT_ON 1
-#define TFT_BL 38
-#define TFT_RST 33
-#define TFT_DC 34
-#define TFT_MOSI 35
-#define TFT_SCLK 36
-#define TFT_CS 37
-#define TOUCH_CS -1
-#define SMOOTH_FONT 1
-#define SPI_FREQUENCY 20000000
-#define SPI_READ_FREQUENCY 20000000
-#define SPI_TOUCH_FREQUENCY 2500000
+// --- Battery voltage sense (2x 100k resistor divider -> GPIO34) ---
+// GPIO34 is ADC1, input-only, free on this board - ideal for analog sensing
+// (ADC2 pins can't be used reliably here since WiFi uses ADC2 internally).
+#define ANALOG_BAT_PIN 34
 
-#define SDCARD_CS 12
-#define SDCARD_SCK 40
-#define SDCARD_MISO 39
-#define SDCARD_MOSI 14
+// --- No SD card slot on this board - fully disabled ---
+#define SDCARD_CS   -1
+#define SDCARD_SCK  -1
+#define SDCARD_MISO -1
+#define SDCARD_MOSI -1
 
-#define GROVE_SDA 2
-#define GROVE_SCL 1
+#define GROVE_SDA 21
+#define GROVE_SCL 22
 
-#define SPI_SCK_PIN 12
-#define SPI_MOSI_PIN 11
-#define SPI_MISO_PIN 13
-#define SPI_SS_PIN 10
+// Generic SPI bus reference - not physically used (TFT uses its own
+// dedicated pins set via TFT_* build flags in ideaspark-esp32.ini)
+#define SPI_SCK_PIN  -1
+#define SPI_MISO_PIN -1
+#define SPI_MOSI_PIN -1
+#define SPI_SS_PIN   -1
 
 #endif /* Pins_Arduino_h */
