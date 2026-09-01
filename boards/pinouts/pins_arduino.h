@@ -1,5 +1,5 @@
-#ifdef T_DISPLAY_S3
-#include "../lilygo-t-display-s3/pins_arduino.h"
+#ifdef ideaspark-esp32 
+#include "../ideaspark-esp/pins_arduino.h"
 #elif T_EMBED_1101
 #include "../lilygo-t-embed-cc1101/pins_arduino.h"
 #elif T_EMBED
