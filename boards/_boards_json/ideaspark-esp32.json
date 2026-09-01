@@ -1,5 +1,6 @@
 {
   "build": {
+    "variant": "ideaspark-esp",
     "arduino": {
       "ldscript": "esp32_out.ld"
     },
